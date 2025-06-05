@@ -1,4 +1,4 @@
-package Colecciones.Boletin1;
+package Colecciones.Boletin1.ejercicio1;
 
 import java.util.Arrays;
 

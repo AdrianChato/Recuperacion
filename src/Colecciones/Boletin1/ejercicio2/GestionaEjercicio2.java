@@ -1,4 +1,4 @@
-package Colecciones.Boletin1;
+package Colecciones.Boletin1.ejercicio2;
 
 public class GestionaEjercicio2 {
 	public static void main(String[] args) {
@@ -20,7 +20,7 @@ public class GestionaEjercicio2 {
             equipo2.añadirAlumno(alumno4);
             equipo2.añadirAlumno(alumno5);
         } catch (DeportivoExcepcion e) {
-            System.out.println("Error al añadir alumno: " + e.getMessage());
+            System.out.println("Error al añadir un alumno: " + e.getMessage());
         }
 
         System.out.println("Equipo 1 (" + equipo1.getNombreEquipo() + "):");

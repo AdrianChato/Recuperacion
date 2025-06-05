@@ -1,4 +1,4 @@
-package Colecciones.Boletin1;
+package Colecciones.Boletin1.ejercicio3y4;
 
 import java.time.LocalDate;
 

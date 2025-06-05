@@ -1,4 +1,4 @@
-package Colecciones.Boletin1;
+package Colecciones.Boletin1.ejercicio3y4;
 
 public class GestionaEjercicio3y4 {
 	public static void main(String[] args) {
@@ -7,7 +7,7 @@ public class GestionaEjercicio3y4 {
 
 	        try {
 	            Libro l1 = new Libro("123A", "El Quijote", "Cervantes", "Novela", 1605);
-	            Libro l2 = new Libro("456B", "1984", "Orwell", "Distopía", 1949);
+	            Libro l2 = new Libro("456B", "1984", "Algaba", "Pedro Sanchez", 1949);
 	            Libro l3 = new Libro("789C", "Cien años de soledad", "García Márquez", "Realismo Mágico", 1967);
 
 	            biblioteca.agregarLibro(l1);
