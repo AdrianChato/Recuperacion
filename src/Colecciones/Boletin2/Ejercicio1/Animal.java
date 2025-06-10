@@ -123,7 +123,10 @@ public class Animal implements Comparable<Animal> {
 
 	@Override
 	public String toString() {
-		return String.format("Nombre: %s, Nacimiento: %s, Medio: %s, Comida: %s", nombre, fechaNacimiento, medio,
-				clasificacionComida);
+		return "Animal [id=" + id + ", nombre=" + nombre + ", especie=" + especie + ", edad=" + edad
+				+ ", clasificacionComida=" + clasificacionComida + ", fechaNacimiento=" + fechaNacimiento + ", peso="
+				+ peso + ", medio=" + medio + ", clasificacionGestacion=" + clasificacionGestacion + "]";
 	}
+
+	
 }
