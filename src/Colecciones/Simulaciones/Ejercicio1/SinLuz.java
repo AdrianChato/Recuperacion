@@ -1,6 +1,7 @@
 package Colecciones.Simulaciones.Ejercicio1;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ public class SinLuz {
 	private String nombre;
 	private List<Encuentro> encuentros;
 
-	public SinLuz(int id, String nombre) {
+	public SinLuz( String nombre) {
 		this.id = id;
 		this.nombre = nombre;
 		this.encuentros = new ArrayList<>();
@@ -63,4 +64,34 @@ public class SinLuz {
 		return "SinLuz [id=" + id + ", nombre=" + nombre + ", encuentros=" + encuentros + "]";
 	}
 
+	public void tieneEncuentro(int dificultad) {
+
+    	boolean encontrado = false;
+
+    	SinLuz s = null;
+
+    	Iterator<Encuentro> it = encuentros.iterator();
+
+
+
+        while (it.hasNext()) {
+
+            Encuentro e = it.next();
+
+
+
+            // Compruebo si la dificultad del encuentro es mayor que la que pide
+
+            if (e.getDificultad() > dificultad) {
+
+          
+
+                // Si lo es, lo muestro por pantalla
+
+                System.out.println(e);
+
+            }
+
+    }
+}
 }

@@ -2,32 +2,59 @@ package Colecciones.Simulaciones.Ejercicio1;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class GestionaElden {
 
 	public static void main(String[] args) {
-		 RegistroSinLuz registro = new RegistroSinLuz();
+		 // Creo tres Sinluz con nombres diferentes
+        SinLuz ardyn = new SinLuz("Ardyn");
+        SinLuz selene = new SinLuz("Selene");
+        SinLuz kael = new SinLuz("Kael");
 
-	        SinLuz s1 = registro.registrarSinLuz("Ranni");
-	        SinLuz s2 = registro.registrarSinLuz("Blaidd");
+        // Creo el repositorio y añado los Sinluz usando su nombre como clave
+        RegistroSinLuz repo = new RegistroSinLuz();
+        repo.getSinluzPorId().put(ardyn.getId(), ardyn);
+        repo.getSinluzPorId().put(selene.getId(), selene);
+        repo.getSinluzPorId().put(kael.getId(), kael);
 
-	        try {
-	            List<String> enemigos = new ArrayList<>();
-	            enemigos.add("Dragón");
-	            enemigos.add("Murciélagos");
+        // Creo los encuentros
+        Encuentro e1 = new Encuentro("Asalto al Bastión Carmesí", LocalDate.of(2025, 3, 10), 8);
+        Encuentro e2 = new Encuentro("Emboscada en el Bosque Umbrío", LocalDate.of(2025, 3, 14), 5);
+        Encuentro e3 = new Encuentro("Duelo en la Cripta Helada", LocalDate.of(2025, 3, 18), 7);
+        Encuentro e4 = new Encuentro("Resistencia en la Torre Abandonada", LocalDate.of(2025, 3, 20), 6);
+        Encuentro e5 = new Encuentro("Invasión en la Villa Marchita", LocalDate.of(2025, 3, 23), 9);
+        Encuentro e6 = new Encuentro("Caza en el Lago Sombrío", LocalDate.of(2025, 3, 25), 4);
+        Encuentro e7 = new Encuentro("Asalto final al Nexo del Caos", LocalDate.of(2025, 3, 30), 10);
 
-	            Encuentro e1 = new Encuentro("Dragón Agheel", LocalDate.of(2025, 6, 10), 8, enemigos);
-	            registro.agregaEncuentro(e1, s1.getId());
+        try {
+            // Agrego encuentros a los Sinluz válidos
+            repo.agregaEncuentro(e1, ardyn.getId());
+            repo.agregaEncuentro(e2, selene.getId());
+            repo.agregaEncuentro(e3, kael.getId());
+            repo.agregaEncuentro(e4, ardyn.getId());
+            repo.agregaEncuentro(e5, selene.getId());
+            repo.agregaEncuentro(e6, kael.getId());
+            repo.agregaEncuentro(e7, ardyn.getId());
 
-	            System.out.println(registro.getSinLuz(s1.getId()));
-	        } catch (EldenException e) {
-	            System.out.println("Error: " + e.getMessage());
-	        }
+            // Intento agregar a un Sinluz con id inexistente
+            repo.agregaEncuentro(new Encuentro("Encuentro perdido", LocalDate.now(), 7), 999);
 
-	        System.out.println("Listado ordenado:");
-	        for (SinLuz s : registro.listarSinLuzOrdenado()) {
-	            System.out.println(s.getNombre());
-	        }
-	    }
-	}
+        } catch (EldenException e) {
+            // Capturo y muestro la excepción sin detener el programa
+            System.out.println(e.getMessage());
+        }
+
+        // Imprimo todos los Sinluz y sus encuentros
+        Iterator<SinLuz> it = repo.getSinluzPorId().values().iterator();
+        while (it.hasNext()) {
+            SinLuz s = it.next();
+            System.out.println(s);
+        }
+
+        // Imprimo solo los encuentros con dificultad mayor a 6
+        System.out.println("Encuentros con dificultad mayor a 6:");
+        repo.mostrarEncuentrosPorDificultad(6);
+    }
+}

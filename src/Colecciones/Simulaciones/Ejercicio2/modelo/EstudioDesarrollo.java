@@ -1,0 +1,30 @@
+package Colecciones.Simulaciones.Ejercicio2.modelo;
+
+public class EstudioDesarrollo {
+	private String nombreEstudio;
+    private String desarrolladorPrincipal;
+    private String pais;
+
+    public EstudioDesarrollo(String nombreEstudio, String desarrolladorPrincipal, String pais) {
+        this.nombreEstudio = nombreEstudio;
+        this.desarrolladorPrincipal = desarrolladorPrincipal;
+        this.pais = pais;
+    }
+
+    public String getNombreEstudio() {
+        return nombreEstudio;
+    }
+
+    public String getDesarrolladorPrincipal() {
+        return desarrolladorPrincipal;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    @Override
+    public String toString() {
+        return nombreEstudio + " - " + desarrolladorPrincipal + " (" + pais + ")";
+    }
+}

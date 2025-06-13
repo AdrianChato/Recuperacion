@@ -9,7 +9,7 @@ public class Encuentro {
 	private int dificultad;
 	private List<String> enemigos;
 
-	public Encuentro(String nombre, LocalDate fecha, int dificultad, List<String> enemigos) {
+	public Encuentro(String nombre, LocalDate fecha, int dificultad) {
 		this.nombre = nombre;
 		this.fecha = fecha;
 		this.dificultad = dificultad;
