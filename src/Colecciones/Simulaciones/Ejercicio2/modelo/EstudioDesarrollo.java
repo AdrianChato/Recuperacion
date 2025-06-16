@@ -1,5 +1,7 @@
 package Colecciones.Simulaciones.Ejercicio2.modelo;
 
+import java.util.Objects;
+
 public class EstudioDesarrollo {
 	private String nombreEstudio;
     private String desarrolladorPrincipal;
@@ -27,4 +29,23 @@ public class EstudioDesarrollo {
     public String toString() {
         return nombreEstudio + " - " + desarrolladorPrincipal + " (" + pais + ")";
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(nombreEstudio);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EstudioDesarrollo other = (EstudioDesarrollo) obj;
+		return Objects.equals(nombreEstudio, other.nombreEstudio);
+	}
+    
+    
 }

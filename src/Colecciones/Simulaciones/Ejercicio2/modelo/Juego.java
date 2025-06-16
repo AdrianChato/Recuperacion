@@ -1,5 +1,7 @@
 package Colecciones.Simulaciones.Ejercicio2.modelo;
 
+import java.util.Objects;
+
 public class Juego {
 	private String titulo;
     private String añoPublicacion;
@@ -43,4 +45,23 @@ public class Juego {
     public String toString() {
         return titulo + " (" + genero + ", " + añoPublicacion + ") - Descargas: " + numDescargas + " - Estado: " + estado;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(añoPublicacion, titulo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Juego other = (Juego) obj;
+		return Objects.equals(añoPublicacion, other.añoPublicacion) && Objects.equals(titulo, other.titulo);
+	}
+    
+    
 }
