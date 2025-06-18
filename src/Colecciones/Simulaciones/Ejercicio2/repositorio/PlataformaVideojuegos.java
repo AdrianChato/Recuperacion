@@ -5,109 +5,120 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import Colecciones.Simulaciones.Ejercicio2.modelo.EstadoJuego;
 import Colecciones.Simulaciones.Ejercicio2.modelo.EstudioDesarrollo;
 import Colecciones.Simulaciones.Ejercicio2.modelo.Juego;
 
 public class PlataformaVideojuegos {
-	// Usamos dos mapas:
-	// Uno para guardar los juegos usando una clave "titulo+año"
-	// Otro para guardar el estudio que creó ese juego, usando la misma clave
-	private HashMap<String, Juego> juegos;
-	private HashMap<String, EstudioDesarrollo> estudios;
+	// Uso un TreeMap para que los juegos estén ordenados según su número de
+	// descargas (compareTo en Juego)
+	// Además, evita duplicados ya que la clave es única (basada en título y año)
+	private Map<Juego, EstudioDesarrollo> plataforma;
 
+	// Constructor, inicializo la plataforma con un TreeMap vacío
 	public PlataformaVideojuegos() {
-		juegos = new HashMap<>();
-		estudios = new HashMap<>();
+		this.plataforma = new TreeMap<>();
 	}
 
-	public HashMap<String, Juego> getJuegos() {
-		return juegos;
+	// Getter para acceder a la plataforma
+	public Map<Juego, EstudioDesarrollo> getPlataforma() {
+		return plataforma;
 	}
 
-	public void setJuegos(HashMap<String, Juego> juegos) {
-		this.juegos = juegos;
+	// Setter para modificar toda la plataforma si fuera necesario
+	public void setPlataforma(Map<Juego, EstudioDesarrollo> plataforma) {
+		this.plataforma = plataforma;
 	}
 
-	public HashMap<String, EstudioDesarrollo> getEstudios() {
-		return estudios;
-	}
-
-	public void setEstudios(HashMap<String, EstudioDesarrollo> estudios) {
-		this.estudios = estudios;
-	}
-	
-	// Método para crear una clave única con el título y año del juego
-    private String crearClave(String titulo, String año) {
-        return titulo.trim().toLowerCase() + "_" + año.trim();
-    }
-
+	// Método para agregar un nuevo juego junto con su estudio
 	public void agregarJuego(Juego juego, EstudioDesarrollo estudio) {
-		 String clave = crearClave(juego.getTitulo(), juego.getAñoPublicacion());
 
-	        // Solo se agrega si no existe aún
-	        if (!juegos.containsKey(clave)) {
-	            juegos.put(clave, juego);
-	            estudios.put(clave, estudio);
-	        }
-	    }
+		// Compruebo si ya existe el juego, para no añadir duplicados
+		if (plataforma.containsKey(juego)) {
+			System.out.println("Este juego ya ha sido agregado");
+		} else {
+			// Si no existe, agrego juego y estudio
+			plataforma.put(juego, estudio);
+		}
+	}
 
+	// Buscar un juego por título y año
 	public Juego buscarJuego(String titulo, String añoPublicacion) {
-		 String clave = crearClave(titulo, añoPublicacion);
-	        return juegos.get(clave); // devuelve null si no existe
-	    }
+		boolean encontrado = false;
+		Juego juego = null;
 
+		// Uso Iterator para recorrer juegos
+		Iterator<Juego> it = plataforma.keySet().iterator();
+		while (it.hasNext() && !encontrado) {
+			Juego j = it.next();
+
+			// Comparo ignorando mayúsculas y minúsculas
+			if (j.getTitulo().equalsIgnoreCase(titulo) && j.getAñoPublicacion().equalsIgnoreCase(añoPublicacion)) {
+				encontrado = true;
+				juego = j;
+			}
+		}
+
+		if (!encontrado)
+			System.out.println("No se ha encontrado");
+
+		return juego;
+	}
+
+	// Cambiar estado de un juego
 	public boolean cambiarEstado(String titulo, String añoPublicacion, EstadoJuego nuevoEstado) {
-		Juego juego = buscarJuego(titulo, añoPublicacion);
+		boolean modificado = false;
 
-        if (juego != null) {
-            juego.setEstado(nuevoEstado); // modificamos el estado
-            return true; // se pudo cambiar
-        } else {
-            return false; // el juego no existe
-        }
-    }
+		Iterator<Juego> it = plataforma.keySet().iterator();
+		while (it.hasNext() && !modificado) {
+			Juego j = it.next();
+			if (j.getTitulo().equalsIgnoreCase(titulo) && j.getAñoPublicacion().equalsIgnoreCase(añoPublicacion)) {
+				j.setEstado(nuevoEstado);
+				modificado = true;
+			}
+		}
 
+		if (!modificado)
+			System.out.println("No se ha encontrado");
+
+		return modificado;
+	}
+
+	// Obtener los 3 juegos con más descargas
 	public List<Juego> top3PorDescargas() {
-		// Creamos una lista con todos los juegos
-        List<Juego> todos = new ArrayList<>(juegos.values());
-        List<Juego> top3 = new ArrayList<>();
+		List<Juego> juegosMasDescargados = new ArrayList<>();
 
-        // Repetimos 3 veces para encontrar los 3 juegos con más descargas
-        for (int i = 0; i < 3 && !todos.isEmpty(); i++) {
-            Juego maximo = todos.get(0);
+// Recorro la plataforma y agrego todos los juegos a la lista
+		Iterator<Juego> it = this.plataforma.keySet().iterator();
 
-            // Buscamos el de más descargas
-            for (int j = 1; j < todos.size(); j++) {
-                if (todos.get(j).getNumDescargas() > maximo.getNumDescargas()) {
-                    maximo = todos.get(j);
-                }
-            }
+		while (it.hasNext()) {
+			Juego j = it.next();
+			juegosMasDescargados.add(j);
+		}
+		// Ordeno la lista según el número de descargas (descendente)
+		java.util.Collections.sort(juegosMasDescargados);
 
-            // Añadimos a la lista final y lo quitamos del original
-            top3.add(maximo);
-            todos.remove(maximo);
-        }
+		return juegosMasDescargados;
+	}
 
-        return top3;
-    }
-
+	// Filtrar juegos por país del estudio de desarrollo
 	public List<Juego> filtrarPorPais(String pais) {
-		List<Juego> filtrados = new ArrayList<>();
+		List<Juego> juegosFiltrados = new ArrayList<>();
 
-        Iterator<String> claves = juegos.keySet().iterator();
-        while (claves.hasNext()) {
-            String clave = claves.next();
-            EstudioDesarrollo estudio = estudios.get(clave);
+		Iterator<Juego> it = plataforma.keySet().iterator();
+		while (it.hasNext()) {
+			Juego juego = it.next();
+			EstudioDesarrollo estudio = plataforma.get(juego);
 
-            if (estudio != null && estudio.getPais().equalsIgnoreCase(pais)) {
-                Juego juego = juegos.get(clave);
-                filtrados.add(juego);
-            }
-        }
+			// Comparo el país ignorando mayúsculas y minúsculas
+			if (estudio.getPais().equalsIgnoreCase(pais)) {
+				juegosFiltrados.add(juego);
+			}
+		}
 
-        return filtrados;
-    }
+		return juegosFiltrados;
+	}
 
 }

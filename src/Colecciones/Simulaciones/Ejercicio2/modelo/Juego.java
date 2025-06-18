@@ -2,7 +2,7 @@ package Colecciones.Simulaciones.Ejercicio2.modelo;
 
 import java.util.Objects;
 
-public class Juego {
+public class Juego implements Comparable <Juego>{
 	private String titulo;
     private String añoPublicacion;
     private GeneroJuego genero;
@@ -62,6 +62,10 @@ public class Juego {
 		Juego other = (Juego) obj;
 		return Objects.equals(añoPublicacion, other.añoPublicacion) && Objects.equals(titulo, other.titulo);
 	}
+
+	@Override
+	public int compareTo(Juego o) {
+		return Integer.compare(o.numDescargas, this.numDescargas);
     
-    
+	}
 }
